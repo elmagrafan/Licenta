@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<Aplicatie>
+	<Locatie>
+		<locationName>Material1</locationName>
+		<x>200</x>
+		<y>50</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Personal</locationName>
+		<x>300</x>
+		<y>50</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<x>200</x>
+		<y>70</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>100</x>
+		<y>160</y>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Semiprodus</locationName>
+		<x>200</x>
+		<y>125</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Personal</locationName>
+		<x>300</x>
+		<y>50</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Produs</locationName>
+		<x>200</x>
+		<y>250</y>
+		<numarJetoane>1</numarJetoane>
+	</Locatie>
+	<Tranzitie>
+		<transitionName>Fierbere</transitionName>
+		<x>200</x>
+		<y>200</y>
+		<durata>14</durata>
+		<locatieIntrare>Produs</locatieIntrare>
+                <locatieIntrare>Personal</locatieIntrare>
+	</Tranzitie>
+	<Tranzitie>
+		<transitionName>Macinare</transitionName>
+		<x>200</x>
+		<y>100</y>
+		<durata>12</durata>
+	<ListaLocatiiIntrare>
+	</ListaLocatiiIntrare>
+	<ListaLocatiiIesire>
+	</ListaLocatiiIesire>
+	</Tranzitie>
+
+
+</Aplicatie>

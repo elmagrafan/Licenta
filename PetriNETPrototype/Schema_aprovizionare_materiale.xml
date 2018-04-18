@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<Aplicatie>
+	<Locatie>
+		<locationName>GenerareMateriale</locationName>
+		<x>25</x>
+		<y>125</y>
+		<numarJetoane>0</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Material1</locationName>
+		<x>50</x>
+		<y>225</y>
+		<numarJetoane>0</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>50</x>
+		<y>300</y>
+		<numarJetoane>0</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Material</locationName>
+		<x>300</x>
+		<y>300</y>
+		<numarJetoane>0</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Material3</locationName>
+		<x>500</x>
+		<y>225</y>
+		<numarJetoane>0</numarJetoane>
+	</Locatie>	
+
+	<Tranzitie>
+	<transitionName>AprovizionareMateriale</transitionName>
+		<x>20</x>
+		<y>155</y>
+		<durata>2</durata>
+	<locatieIntrare>GenerareMateriale</locatieIntrare>
+	<locatieIesire>GenerareMateriale</locatieIesire>
+	<locatieIesire>Material3</locatieIesire>
+	<locatieIesire>Material</locatieIesire>
+	<locatieIesire>Material2</locatieIesire>
+	<locatieIesire>Material1</locatieIesire>
+	<ListaLocatiiIntrare></ListaLocatiiIntrare>
+	<ListaLocatiiIesire></ListaLocatiiIesire>
+	</Tranzitie>
+
+</Aplicatie>

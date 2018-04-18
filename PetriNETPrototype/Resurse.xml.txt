@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<Aplicatie>
+	
+	<Locatie>
+		<locationName>Personal</locationName>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+
+
+
+	<Locatie>
+		<locationName>Echipament</locationName>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material3</locationName>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Personal2</locationName>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material</locationName>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+
+	
+
+</Aplicatie>

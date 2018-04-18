@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<Aplicatie>
+	<Locatie>
+		<locationName>Material1</locationName>
+		<x>50</x>
+		<y>75</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Personal</locationName>
+		<x>150</x>
+		<y>75</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<x>100</x>
+		<y>75</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>50</x>
+		<y>150</y>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Semiprodus</locationName>
+		<x>100</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Paracetamol</locationName>
+		<x>100</x>
+		<y>250</y>
+		<numarJetoane>1</numarJetoane>
+	</Locatie>
+	<Tranzitie>
+		<transitionName>Fierbere</transitionName>
+		<x>100</x>
+		<y>200</y>
+		<durata>14</durata>
+		<locatieIntrare>Material1</locatieIntrare>
+                <locatieIntrare>Semiprodus</locatieIntrare>
+		<locatieIntrare>Echipament3</locatieIntrare>
+	</Tranzitie>
+	<Tranzitie>
+		<transitionName>Macinare</transitionName>
+		<x>100</x>
+		<y>100</y>
+		<durata>12</durata>
+	<ListaLocatiiIntrare></ListaLocatiiIntrare>
+	<ListaLocatiiIesire></ListaLocatiiIesire>
+	</Tranzitie>
+
+
+
+	<Locatie>
+		<locationName>Echipament</locationName>
+		<x>250</x>
+		<y>75</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament3</locationName>
+		<x>350</x>
+		<y>75</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament2</locationName>
+		<x>300</x>
+		<y>75</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>250</x>
+		<y>150</y>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Semiprodus</locationName>
+		<x>300</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Aspirina</locationName>
+		<x>300</x>
+		<y>250</y>
+		<numarJetoane>1</numarJetoane>
+	</Locatie>
+	<Tranzitie>
+		<transitionName>Fierbere1</transitionName>
+		<x>300</x>
+		<y>200</y>
+		<durata>14</durata>
+		<locatieIntrare>Aspirina</locatieIntrare>
+                <locatieIntrare>Echipament3</locatieIntrare>
+	</Tranzitie>
+	<Tranzitie>
+		<transitionName>Macinare1</transitionName>
+		<x>300</x>
+		<y>100</y>
+		<durata>12</durata>
+	<ListaLocatiiIntrare>
+	</ListaLocatiiIntrare>
+	<ListaLocatiiIesire>
+	</ListaLocatiiIesire>
+	</Tranzitie>
+
+</Aplicatie>

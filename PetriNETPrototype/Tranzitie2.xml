@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<Aplicatie>
+	<Locatie>
+		<locationName>Material1</locationName>
+		<x>200</x>
+		<y>50</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Personal</locationName>
+		<x>300</x>
+		<y>50</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<x>200</x>
+		<y>70</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>100</x>
+		<y>160</y>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Semiprodus</locationName>
+		<x>200</x>
+		<y>175</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Personal</locationName>
+		<x>300</x>
+		<y>50</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Produs</locationName>
+		<x>200</x>
+		<y>250</y>
+		<numarJetoane>1</numarJetoane>
+	</Locatie>
+	<Tranzitie>
+		<transitionName>Fierbere</transitionName>
+		<x>200</x>
+		<y>200</y>
+		<durata>14</durata>
+		<locatieIntrare>Produs</locatieIntrare>
+                <locatieIntrare>Personal</locatieIntrare>
+	</Tranzitie>
+	<Tranzitie>
+		<transitionName>Macinare</transitionName>
+		<x>200</x>
+		<y>100</y>
+		<durata>12</durata>
+	<ListaLocatiiIntrare>
+	</ListaLocatiiIntrare>
+	<ListaLocatiiIesire>
+	</ListaLocatiiIesire>
+	</Tranzitie>
+	
+
+  
+	<Locatie>
+		<locationName>Material1</locationName>
+		<x>300</x>
+		<y>100</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<x>400</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament2</locationName>
+		<x>300</x>
+		<y>170</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament3</locationName>
+		<x>200</x>
+		<y>310</y>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Semiprodus</locationName>
+		<x>300</x>
+		<y>270</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<x>400</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Produs</locationName>
+		<x>300</x>
+		<y>350</y>
+		<numarJetoane>1</numarJetoane>
+	</Locatie>
+	<Tranzitie>
+		<transitionName>Fierbere</transitionName>
+		<x>300</x>
+		<y>300</y>
+		<durata>14</durata>
+		<locatieIntrare>Produs</locatieIntrare>
+                <locatieIntrare>Echipament1</locatieIntrare>
+	</Tranzitie>
+	<Tranzitie>
+		<transitionName>Macinare</transitionName>
+		<x>300</x>
+		<y>200</y>
+		<durata>12</durata>
+	<ListaLocatiiIntrare>
+	</ListaLocatiiIntrare>
+	<ListaLocatiiIesire>
+	</ListaLocatiiIesire>
+	</Tranzitie>
+    
+		
+<Locatie>
+		<locationName>Material1</locationName>
+		<x>400</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>400</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Echipament1</locationName>
+		<x>400</x>
+		<y>220</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>400</x>
+		<y>260</y>
+		<numarJetoane>2</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Semiprodus</locationName>
+		<x>400</x>
+		<y>320</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>Material2</locationName>
+		<x>500</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	<Locatie>
+		<locationName>Produs</locationName>
+		<x>400</x>
+		<y>350</y>
+		<numarJetoane>1</numarJetoane>
+	</Locatie>
+	<Tranzitie>
+		<transitionName>Fierbere</transitionName>
+		<x>400</x>
+		<y>300</y>
+		<durata>14</durata>
+		<locatieIntrare>Produs</locatieIntrare>
+                <locatieIntrare>Material2</locatieIntrare>
+	</Tranzitie>
+	<Tranzitie>
+		<transitionName>Macinare</transitionName>
+		<x>400</x>
+		<y>200</y>
+		<durata>12</durata>
+	<ListaLocatiiIntrare>
+	</ListaLocatiiIntrare>
+	<ListaLocatiiIesire>
+	</ListaLocatiiIesire>
+	</Tranzitie>
+
+
+</Aplicatie>

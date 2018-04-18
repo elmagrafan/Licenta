@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Aplicatie>
+	<Locatie>
+		<locationName>Material1</locationName>
+		<x>200</x>
+		<y>150</y>
+		<numarJetoane>3</numarJetoane>
+	</Locatie>
+
+	
+
+</Aplicatie>

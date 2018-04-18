@@ -1,0 +1,10 @@
+<Aplicatie>
+	<Locatie>
+		<locationName>NecesarParacetamol</locationName>
+		<numarJetoane>33</numarJetoane>
+	</Locatie>
+	<Locatie>
+		<locationName>NecesarAspirina</locationName>
+		<numarJetoane>15</numarJetoane>
+	</Locatie>
+</Aplicatie>
