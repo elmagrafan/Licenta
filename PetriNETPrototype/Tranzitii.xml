@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tranzitieInXML>
+    <durata>20</durata>
+    <listaLocatiiIesire>
+        <numarJetoane>33</numarJetoane>
+        <nume>Personal</nume>
+        <x>55</x>
+        <y>45</y>
+    </listaLocatiiIesire>
+    <listaLocatiiIntrare>
+        <numarJetoane>33</numarJetoane>
+        <nume>Personal</nume>
+        <x>55</x>
+        <y>45</y>
+    </listaLocatiiIntrare>
+    <nume>Echipament</nume>
+    <x>500</x>
+    <y>300</y>
+</tranzitieInXML>

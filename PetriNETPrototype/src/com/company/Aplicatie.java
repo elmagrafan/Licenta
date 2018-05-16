@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -44,6 +45,8 @@ public class Aplicatie extends JFrame implements ActionListener {
     int numarPasiSimulare = 0;
     final JFileChooser fileOpener;
     Document doc;
+    Tranzitie tranzitieCurenta;
+
 
     public Aplicatie() {
         super("Model fabricatie");
@@ -54,10 +57,10 @@ public class Aplicatie extends JFrame implements ActionListener {
         fileOpener = new JFileChooser();
 
 
-        MenuBar mb = new MenuBar();		        // begin with creating menu bar
-        setMenuBar(mb);				// add menu bar to frame
+        MenuBar mb = new MenuBar();                // begin with creating menu bar
+        setMenuBar(mb);                // add menu bar to frame
 
-        simulareMeniu = new Menu("Simulare");		// create menus
+        simulareMeniu = new Menu("Simulare");        // create menus
 
         fileMeniu = new Menu("File");
 
@@ -65,23 +68,18 @@ public class Aplicatie extends JFrame implements ActionListener {
 
         vizualizationMenu = new Menu("Vizualizare");
 
+        retetar = new Menu("Retete");
 
         mb.add(fileMeniu);
         mb.add(simulareMeniu);  // add menus to menu bar
         mb.add(productMenu);
         mb.add(vizualizationMenu);
 
-
-        simulareMeniu.addActionListener(this);		// link with ActionListener for event handling
+        simulareMeniu.addActionListener(this);        // link with ActionListener for event handling
         fileMeniu.addActionListener(this);
         vizualizationMenu.addActionListener(this);
         productMenu.addActionListener(this);
-
-        submenu = new Menu("A submenu");
-
-
-        retetar = new MenuItem("retetar");
-        submenu.add(retetar);
+        retetar.addActionListener(this);
 
         simulareMeniu.add(new MenuItem("Start fast"));
         simulareMeniu.add(new MenuItem("Start slow"));
@@ -92,7 +90,11 @@ public class Aplicatie extends JFrame implements ActionListener {
 
 
         fileMeniu.add(new MenuItem("Default"));
-        fileMeniu.add(new MenuItem("Retete"));
+
+        ((Menu) retetar).add(new MenuItem("Adaugati o reteta"));
+        ((Menu) retetar).add(new MenuItem("Salvati o reteta"));
+        
+        fileMeniu.add(retetar);
         fileMeniu.add(new MenuItem("Resurse"));
         fileMeniu.add(new MenuItem("Comenzi"));
         fileMeniu.add(new MenuItem("Aprovizionare materiale"));
@@ -101,7 +103,7 @@ public class Aplicatie extends JFrame implements ActionListener {
         productMenu.add(new MenuItem("Creati o lista de resurse"));
         productMenu.add(new MenuItem("Creati o lista de retete"));
 
-        setTitle("Simulare Petri Net");		// frame creation methods
+        setTitle("Simulare Petri Net");        // frame creation methods
         setVisible(true);
 
 
@@ -114,7 +116,7 @@ public class Aplicatie extends JFrame implements ActionListener {
         String str = e.getActionCommand();// know the menu item selected by the user
         System.out.println("You selected " + str);
 
-        if(str.equals("Start fast")) {
+        if (str.equals("Start fast")) {
             myTimer = new Timer();
 
             String s = (String) JOptionPane.showInputDialog(
@@ -133,27 +135,27 @@ public class Aplicatie extends JFrame implements ActionListener {
                 return;
             }
 
-                }else if(str.equals("Start slow")) {
-                myTimer = new Timer();
+        } else if (str.equals("Start slow")) {
+            myTimer = new Timer();
 
-                String s1 = (String) JOptionPane.showInputDialog(
-                        this,
-                        "Please insert the number of steps to take",
-                        "Number of steps",
-                        JOptionPane.PLAIN_MESSAGE,
-                        null,
-                        null,
-                        "0");
+            String s1 = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Please insert the number of steps to take",
+                    "Number of steps",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "0");
 
-                if ((s1 != null) && (s1.length() > 0)) {
-                    numarPasiSimulare = parseInt(s1);
-                    pasSimulare = new PasSimulare(this, g, numarPasiSimulare, myTimer);
-                    myTimer.scheduleAtFixedRate(pasSimulare, 1000, 1000);
-                    return;
+            if ((s1 != null) && (s1.length() > 0)) {
+                numarPasiSimulare = parseInt(s1);
+                pasSimulare = new PasSimulare(this, g, numarPasiSimulare, myTimer);
+                myTimer.scheduleAtFixedRate(pasSimulare, 1000, 1000);
+                return;
 
-                }
-           // System.exit(0);
-            }else if(str.equals("Retete")){
+            }
+            // System.exit(0);
+        } else if (str.equals("Adaugati o reteta")) {
             //open a file
             //Create a file chooser
 
@@ -167,7 +169,177 @@ public class Aplicatie extends JFrame implements ActionListener {
                 parsareFisierProduse(file);
             }
             setVisible(true);
-            }else if(str.equals("Resurse")){
+
+        }else if (str.equals("Salvati o reteta"))     {
+
+
+            LocatieInXML locatieInXML = new LocatieInXML();
+            locatieInXML.setX(55);
+            locatieInXML.setY(45);
+            locatieInXML.setNumarJetoane(33);
+            locatieInXML.setNume("Personal");
+
+            TranzitieInXML tranzitieInXML = new TranzitieInXML();
+            ArrayList<LocatieInXML> arrayLocatiiInXml = new ArrayList<>();
+            arrayLocatiiInXml.add(locatieInXML);
+            tranzitieInXML.setDurata(20);
+
+            tranzitieInXML.setListaLocatiiIesire(arrayLocatiiInXml);
+            tranzitieInXML.setListaLocatiiIntrare(arrayLocatiiInXml);
+
+            tranzitieInXML.setX(500);
+            tranzitieInXML.setY(300);
+            tranzitieInXML.setNume("Echipament");
+
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            DocumentBuilder db = null;
+            try {
+                db = dbf.newDocumentBuilder();
+            } catch (ParserConfigurationException e1) {
+                e1.printStackTrace();
+            }
+            Document doc = db.newDocument();
+            Element rootElement = doc.createElement("Aplicatie");
+            doc.appendChild(rootElement);
+
+                for (int j = 0; j < listaLocatii.listaLocatii.size(); j++) {
+                    Locatie l = listaLocatii.listaLocatii.get(j);
+                    Element locatie = doc.createElement("Locatie");
+                    rootElement.appendChild(locatie);
+
+                    Element locationName = doc.createElement("locationName");
+                    locationName.appendChild(doc.createTextNode(l.nume));
+                    locatie.appendChild(locationName);
+
+                    Element numarNecesarJetoane = doc.createElement("numarJetoane");
+                    String numarJetoane = String.valueOf(l.numar);
+                    numarNecesarJetoane.appendChild(doc.createTextNode(numarJetoane));
+                    locatie.appendChild(numarNecesarJetoane);
+
+                    Element coordX = doc.createElement("x");
+                    String coordoX = String.valueOf(l.x);
+                    coordX.appendChild(doc.createTextNode(coordoX));
+                    locatie.appendChild(coordX);
+
+                    Element coordY = doc.createElement("y");
+                    String coordoY = String.valueOf(l.y);
+                    coordY.appendChild(doc.createTextNode(coordoY));
+                    locatie.appendChild(coordY);
+
+                }
+
+                for (int j = 0; j < listaTranzitii.listaTranzitii.size(); j++)
+
+                {
+                    Tranzitie t = listaTranzitii.listaTranzitii.get(j);
+                    Element tranzitie = doc.createElement("Tranzitie");
+                    rootElement.appendChild(tranzitie);
+
+                    Element tranzitionName = doc.createElement("tranzitionName");
+                    tranzitionName.appendChild(doc.createTextNode(t.nume));
+                    tranzitie.appendChild(tranzitionName);
+
+                    Element coordXTranzitie = doc.createElement("x");
+                    String coordoXTranz = String.valueOf(t.x);
+                    coordXTranzitie.appendChild(doc.createTextNode(coordoXTranz));
+                    tranzitie.appendChild(coordXTranzitie);
+
+                    Element coordYTranzitie = doc.createElement("y");
+                    String coordoYTranz = String.valueOf(t.y);
+                    coordYTranzitie.appendChild(doc.createTextNode(coordoYTranz));
+                    tranzitie.appendChild(coordYTranzitie);
+
+                    Element durata = doc.createElement("durata");
+                    String durataTranz = String.valueOf(t.time);
+                    durata.appendChild(doc.createTextNode(durataTranz));
+                    tranzitie.appendChild(durata);
+
+
+                    for (int i = 0; i < t.listaLocatiiIntrare.size(); i++)
+                    {
+                        Element listaLocatiiIntrare = doc.createElement("locatieIntrare");
+                        listaLocatiiIntrare.appendChild(doc.createTextNode(t.listaLocatiiIntrare.get(i).nume));
+                        tranzitie.appendChild(listaLocatiiIntrare);
+                    }
+
+                    for (int i = 0; i < t.listaLocatiiIesire.size(); i++)
+                    {
+                        Element listaLocatiiIesire = doc.createElement("locatieIesire");
+                        listaLocatiiIesire.appendChild(doc.createTextNode(t.listaLocatiiIesire.get(i).nume));
+                        tranzitie.appendChild(listaLocatiiIesire);
+                    }
+
+                }
+
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = null;
+            try {
+                transformer = transformerFactory.newTransformer();
+            } catch (TransformerConfigurationException e1) {
+                e1.printStackTrace();
+            }
+            DOMSource source = new DOMSource(doc);
+
+            File file = null;
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                file = fileChooser.getSelectedFile();
+                // save to file
+            }
+            StreamResult resultXml = new StreamResult(file);
+            // Output to console for testing
+            // StreamResult result = new StreamResult(System.out);
+
+            try {
+                transformer.transform(source, resultXml);
+            } catch (TransformerException e1) {
+                e1.printStackTrace();
+            }
+
+
+
+         /*   try {
+
+                File file = new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Locatii.xml");
+                JAXBContext jaxbContext = JAXBContext.newInstance(LocatieInXML.class);
+                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+                // output pretty printed
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+
+                jaxbMarshaller.marshal(locatieInXML, doc);
+                jaxbMarshaller.marshal(locatieInXML, System.out);
+
+            } catch (JAXBException e1) {
+                e1.printStackTrace();
+            }     */
+
+
+
+           /* try {
+
+                File file = new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Retete.xml");
+                JAXBContext jaxbContext = JAXBContext.newInstance(TranzitieInXML.class);
+                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+                // output pretty printed
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+
+
+                jaxbMarshaller.marshal(tranzitieInXML, doc);
+                jaxbMarshaller.marshal(tranzitieInXML, System.out);
+
+
+            } catch (JAXBException e1) {
+                e1.printStackTrace();
+            }  */
+
+        } else if (str.equals("Resurse")) {
             //open a file
             //Create a file chooser
 
@@ -181,7 +353,7 @@ public class Aplicatie extends JFrame implements ActionListener {
                 parsareFisierResurse(file);
             }
             setVisible(true);
-            }else if(str.equals("Comenzi")) {
+        } else if (str.equals("Comenzi")) {
             //open a file
             //Create a file chooser
 
@@ -196,7 +368,7 @@ public class Aplicatie extends JFrame implements ActionListener {
             }
             setVisible(true);
 
-        }else if(str.equals("Aprovizionare materiale")) {
+        } else if (str.equals("Aprovizionare materiale")) {
             //open a file
             //Create a file chooser
             //In response to a button click:
@@ -209,7 +381,7 @@ public class Aplicatie extends JFrame implements ActionListener {
             }
             setVisible(true);
 
-        }else if(str.equals("Configurare")){
+        } else if (str.equals("Configurare")) {
             JFrame frame = new JFrame("Please insert some data:");
             String configurationOption = JOptionPane.showInputDialog(frame, "Please insert the number of tokens that are to be inserted");
             String tokenConfiguration = JOptionPane.showInputDialog(frame, "Please insert the number of tokens that are to be inserted at location echipament");
@@ -226,8 +398,7 @@ public class Aplicatie extends JFrame implements ActionListener {
             parsareFisierResurse(tokenConfigurationNumber, token1ConfigurationNumber, token2ConfigurationNumber);
             setVisible(true);
 
-        }else if(str.equals("Vizualizare tabel"))
-        {
+        } else if (str.equals("Vizualizare tabel")) {
             int i, j, i1;
             String string = "";
             String title = "value of tokens in tabular form";
@@ -239,29 +410,23 @@ public class Aplicatie extends JFrame implements ActionListener {
                 }
                 string += "\n";
             }
-            JOptionPane.showMessageDialog(this,string);
-        }else if(str.equals("Vizualizare grafic"))
-        {
+            JOptionPane.showMessageDialog(this, string);
+        } else if (str.equals("Vizualizare grafic")) {
             JFrame frame = new JFrame("Please insert some data:");
             String numeLocatie = JOptionPane.showInputDialog(frame, "Please insert the name of location to be displayed");
-            for (int i = 1; i < this.listaLocatii.listaLocatii.size(); i++){
-                if(numeLocatie.equals(this.listaLocatii.listaLocatii.get(i).nume)){
+            for (int i = 1; i < this.listaLocatii.listaLocatii.size(); i++) {
+                if (numeLocatie.equals(this.listaLocatii.listaLocatii.get(i).nume)) {
                     LineChartEx ex = new LineChartEx(numeLocatie, registru, this);
                     ex.setVisible(true);
                 }
-                }
-        }
-
-        else if(str.equals("Default"))
-        {
+            }
+        } else if (str.equals("Default")) {
             parsareFisierProduse(new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Retete5_0.xml"));
             parsareFisierComenzi(new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Comenzi.xml"));
             parsareFisierAprovizionareMateriale(new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Schema_aprovizionare_materiale.xml"));
             parsareFisierResurse(new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Resurse.xml"));
             setVisible(true);
-        }
-
-        else if(str.equals("Creati o lista de comenzi")) {
+        } else if (str.equals("Creati o lista de comenzi")) {
             int result = 1, i;
             ArrayList<String> numeNecesarComenzi = new ArrayList<String>();
             ArrayList<String> numeNecesarNumarJetoane = new ArrayList<String>();
@@ -297,10 +462,9 @@ public class Aplicatie extends JFrame implements ActionListener {
                 doc.appendChild(rootElement);
 
 
-
                 // staff elements
 
-                for(i = 0; i < numeNecesarComenzi.size() || i < numeNecesarNumarJetoane.size(); i++) {
+                for (i = 0; i < numeNecesarComenzi.size() || i < numeNecesarNumarJetoane.size(); i++) {
 
                     Element locatie = doc.createElement("Locatie");
                     rootElement.appendChild(locatie);
@@ -333,7 +497,7 @@ public class Aplicatie extends JFrame implements ActionListener {
             } catch (TransformerException tfe) {
                 tfe.printStackTrace();
             }
-        } else if(str.equals("Creati o lista de resurse")){
+        } else if (str.equals("Creati o lista de resurse")) {
             int result = 1, i;
             ListaResurseModel item;
             ArrayList<ListaResurseModel> listaResurseModelArray = new ArrayList<>();
@@ -372,7 +536,7 @@ public class Aplicatie extends JFrame implements ActionListener {
 
                 // staff elements
 
-                    for (i = 0; i < listaResurseModelArray.size(); i++){
+                for (i = 0; i < listaResurseModelArray.size(); i++) {
                     String itemModelValue = null;
                     Element locatie = doc.createElement("Locatie");
                     rootElement.appendChild(locatie);
@@ -385,7 +549,7 @@ public class Aplicatie extends JFrame implements ActionListener {
                     itemModelValue = String.valueOf(listaResurseModelArray.get(i).getValue());
                     numarNecesarJetoane.appendChild(doc.createTextNode(itemModelValue));
                     locatie.appendChild(numarNecesarJetoane);
-                    }
+                }
 
 
                 // write the content into xml file
@@ -400,14 +564,13 @@ public class Aplicatie extends JFrame implements ActionListener {
 
                 System.out.println("File saved!");
 
-            }
-            catch (ParserConfigurationException pce) {
+            } catch (ParserConfigurationException pce) {
                 pce.printStackTrace();
-            }catch (TransformerException tfe) {
+            } catch (TransformerException tfe) {
                 tfe.printStackTrace();
             }
 
-        }else if(str.equals("Creati o lista de retete")) {
+        } else if (str.equals("Creati o lista de retete")) {
 
             final JFrame frame = new JFrame("Adaugati una dintre optiuni");
             frame.setVisible(true);
@@ -417,48 +580,81 @@ public class Aplicatie extends JFrame implements ActionListener {
             final JPanel panel = new JPanel();
             frame.add(panel);
             JButton button = new JButton("Resurse");
+            final JButton buttonCancelCreatiListaRetete = new JButton("Finalizare");
+
             panel.add(button);
-            final ArrayList<String> arrayNume = new ArrayList<>();
-            final ArrayList<String> arrayCoordonataX = new ArrayList<>();
-            final ArrayList<String> arrayCoordonataY = new ArrayList<>();
+            buttonCancelCreatiListaRetete.setVisible(true);
+            final ArrayList<String> arrayNumeResurse = new ArrayList<>();
+            final ArrayList<String> arrayCoordonataXResurse = new ArrayList<>();
+            final ArrayList<String> arrayCoordonataYResurse = new ArrayList<>();
+            final ArrayList<String> arrayNumarJetoane = new ArrayList<>();
 
 
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JFrame frame = new JFrame("Completati campurile");
-                    frame.setSize(500, 200);
+                    final JFrame frame = new JFrame("Inserati resurse");
+                    frame.setSize(1200, 200);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    JPanel panel = new JPanel();
+                    JPanel panel = new JPanel(new GridBagLayout());
                     frame.add(panel);
-                    final JTextField textField = new JTextField("Inserati nume", 10);
-                    final JTextField textField1 = new JTextField("Inserati coordonata x", 10);
-                    final JTextField textField2 = new JTextField("Inserati coordonata y", 10);
-                    JButton button1 = new JButton("Adauga resurse");
+                    JButton buttonCancelResurse = new JButton("Finalizare");
+                    final JTextField textField = new JTextField(10);
+                    final JTextField textField1 = new JTextField(10);
+                    final JTextField textField2 = new JTextField(10);
+                    final JTextField textField3 = new JTextField(10);
+                    JButton buttonAdaugaResurse = new JButton("Adauga resurse");
                     JLabel jLabel = new JLabel("Nume", 10);
                     JLabel jLabel1 = new JLabel("Coordonata x:", 10);
                     JLabel jLabel2 = new JLabel("Coordonata y:", 10);
+                    JLabel jLabel3 = new JLabel("Numarul de jetoane:", 10);
                     panel.add(jLabel);
                     panel.add(textField);
                     panel.add(jLabel1);
                     panel.add(textField1);
                     panel.add(jLabel2);
                     panel.add(textField2);
-                    panel.add(button1);
+                    panel.add(jLabel3);
+                    panel.add(textField3);
+                    panel.add(buttonAdaugaResurse);
+                    panel.add(buttonCancelResurse);
                     textField.setVisible(true);
                     textField1.setVisible(true);
                     textField2.setVisible(true);
+                    textField3.setVisible(true);
                     jLabel.setVisible(true);
                     jLabel1.setVisible(true);
                     jLabel2.setVisible(true);
+                    jLabel3.setVisible(true);
+                    buttonCancelResurse.setVisible(true);
 
-                    button1.addActionListener(new ActionListener() {
+                    buttonCancelResurse.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            frame.setVisible(false);
+                            frame.dispose();
+
+                            for (int i = 0; i < arrayCoordonataXResurse.size() || i < arrayCoordonataYResurse.size() || i < arrayNumeResurse.size() || i < arrayNumarJetoane.size(); i++) {
+                                int arrayCoordonataXInt = Integer.parseInt(arrayCoordonataXResurse.get(i));
+                                int arrayCoordonataYInt = Integer.parseInt(arrayCoordonataYResurse.get(i));
+                                int arrayNumarJetoaneInt = Integer.parseInt(arrayNumarJetoane.get(i));
+
+                                Locatie locatie = new Locatie(arrayCoordonataXInt, arrayCoordonataYInt, arrayNumeResurse.get(i), arrayNumarJetoaneInt);
+                                listaLocatii.listaLocatii.add(locatie);
+                               // setVisible(true);
+                            }
+
+                        }
+                    });
+
+                    buttonAdaugaResurse.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
 
-                            arrayNume.add(textField.getText());
-                            arrayCoordonataX.add(textField1.getText());
-                            arrayCoordonataY.add(textField2.getText());
+                            arrayNumeResurse.add(textField.getText());
+                            arrayCoordonataXResurse.add(textField1.getText());
+                            arrayCoordonataYResurse.add(textField2.getText());
+                            arrayNumarJetoane.add(textField3.getText());
                         }
                     });
                     panel.setVisible(true);
@@ -466,322 +662,171 @@ public class Aplicatie extends JFrame implements ActionListener {
                 }
             });
 
-            JButton button2 = new JButton("Faze");
+            JButton buttonFaze = new JButton("Faze");
             final ArrayList<String> arrayNumeLocatieIntrare = new ArrayList<>();
             final ArrayList<String> arrayNumeLocatieIesire = new ArrayList<>();
-            panel.add(button2);
+            final ArrayList<String> arrayNumeFaze = new ArrayList<>();
+            final ArrayList<String> arrayCoordonataXFaze = new ArrayList<>();
+            final ArrayList<String> arrayCoordonataYFaze = new ArrayList<>();
+            final ArrayList<String> arrayDurataFaza = new ArrayList<>();
+            panel.add(buttonFaze);
 
-            button2.addActionListener(new ActionListener() {
+            buttonFaze.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    final JFrame frame = new JFrame("Completati campurile");
-                    frame.setSize(500, 200);
+                    final JFrame frame = new JFrame("Inserati faze");
+                    frame.setSize(1200, 200);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    final JPanel panel = new JPanel();
-
-                    Component add = frame.add(panel);
-                    JTextField textField = new JTextField("Inserati numele aici", 10);
-                    JTextField textField1 = new JTextField("Inserati coordonata x aici", 10);
-                    JTextField textField2 = new JTextField("Inserati coordonata y aici", 10);
-                    JButton button1 = new JButton("Adauga faze");
-
+                    JPanel panel = new JPanel();
+                    frame.add(panel);
+                    final JTextField textField = new JTextField(10);
+                    final JTextField textField1 = new JTextField(10);
+                    final JTextField textField2 = new JTextField(10);
+                    final JTextField textField3 = new JTextField(10);
+                    JButton buttonAdaugaFaze = new JButton("Adauga faze");
+                    JButton buttonCancelFaze = new JButton("Finalizare");
                     JLabel jLabel = new JLabel("Nume", SwingConstants.LEFT);
                     JLabel jLabel1 = new JLabel("Coordonata x:", SwingConstants.LEADING);
                     JLabel jLabel2 = new JLabel("Coordonata y:", SwingConstants.TRAILING);
+                    JLabel jLabel3 = new JLabel("Durata:", SwingConstants.TRAILING);
                     panel.add(jLabel);
                     panel.add(textField);
                     panel.add(jLabel1);
                     panel.add(textField1);
                     panel.add(jLabel2);
                     panel.add(textField2);
-                    panel.add(button1);
+                    panel.add(jLabel3);
+                    panel.add(textField3);
+                    panel.add(buttonAdaugaFaze);
+                    panel.add(buttonCancelFaze);
                     jLabel.setVisible(true);
                     jLabel1.setVisible(true);
                     jLabel2.setVisible(true);
-                    button1.setVisible(true);
+                    jLabel3.setVisible(true);
+                    buttonAdaugaFaze.setVisible(true);
                     textField.setVisible(true);
                     textField1.setVisible(true);
                     textField2.setVisible(true);
+                    textField3.setVisible(true);
                     panel.setVisible(true);
-                    add.setVisible(true);
                     frame.setVisible(true);
 
-                    button1.addActionListener(new ActionListener() {
+
+
+                    buttonCancelFaze.setVisible(true);
+                    buttonCancelFaze.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            frame.setVisible(false);
+                            frame.dispose();
+
+                        }
+                    });
+
+
+                    buttonAdaugaFaze.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // JPanel panel = new JPanel();
-                            final JFrame frame = new JFrame("Completati campurile");
+                            final JFrame frame = new JFrame("Inserati locatii intrare si iesire");
                             frame.setSize(500, 200);
                             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                             JPanel panel = new JPanel();
                             frame.add(panel);
                             String[] choices = {"Locatii intrare", "Locatii iesire"};
-                            JComboBox<String> comboBox = new JComboBox<>(choices);
+                            final JComboBox<String> comboBox = new JComboBox<>(choices);
                             comboBox.setVisible(true);
                             JLabel jLabel3 = new JLabel("Locatii:", SwingConstants.LEFT);
-                            final JTextField jTextField = new JTextField("Inserati locatia:", 10);
-                            JButton button3 = new JButton("Adauga");
-                            JButton button4 = new JButton("Cancel");
+                            final JTextField jTextField = new JTextField(10);
+                            JButton buttonAdaugaLocatiiIE = new JButton("Adauga");
+                            JButton buttonCancelAdaugaFaze = new JButton("Finalizare");
                             jLabel3.setVisible(true);
                             jTextField.setVisible(true);
-                            button3.setVisible(true);
-                            button4.setVisible(true);
-                            button4.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    frame.setVisible(false);
-                                    frame.dispose();
-                                }
-                            });
-                            if (comboBox.equals("Locatii intrare")) {
-                                button3.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        arrayNumeLocatieIntrare.add(jTextField.getText());
-                                    }
-                                });
-                            } else if (comboBox.equals("Locatii iesire")) {
-                                button3.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        arrayNumeLocatieIesire.add(jTextField.getText());
-                                    }
-                                });
-                            }
+                            buttonAdaugaLocatiiIE.setVisible(true);
+                            buttonCancelAdaugaFaze.setVisible(true);
                             panel.add(comboBox);
                             panel.add(jLabel3);
                             panel.add(jTextField);
-                            panel.add(button3);
-                            panel.add(button4);
+                            panel.add(buttonAdaugaLocatiiIE);
+                            panel.add(buttonCancelAdaugaFaze);
                             frame.setVisible(true);
                             panel.setVisible(true);
-                        }
+
+                            arrayNumeFaze.add(textField.getText());
+                            arrayCoordonataXFaze.add(textField1.getText());
+                            arrayCoordonataYFaze.add(textField2.getText());
+                            arrayDurataFaza.add(textField3.getText());
+                            
+
+                            buttonCancelAdaugaFaze.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+
+
+                                    frame.setVisible(false);
+                                    frame.dispose();
+
+                                }
+                                //  setVisible(true);
+                            });
+
+
+                                buttonAdaugaLocatiiIE.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+
+                                        for (int i = 0; i < arrayCoordonataXFaze.size(); i++) {
+                                            int arrayCoordonataXInt = Integer.parseInt(arrayCoordonataXFaze.get(i));
+                                            int arrayCoordonataYInt = Integer.parseInt(arrayCoordonataYFaze.get(i));
+                                            int arrayDurataFazeInt = Integer.parseInt(arrayDurataFaza.get(i));
+
+                                            tranzitieCurenta = new Tranzitie(arrayCoordonataXInt, arrayCoordonataYInt, arrayNumeFaze.get(i), arrayDurataFazeInt);
+                                            listaTranzitii.listaTranzitii.add(tranzitieCurenta);
+                                            //setVisible(true);
+                                        }
+
+                                        if (comboBox.getSelectedItem().equals("Locatii intrare")) {
+                                            arrayNumeLocatieIntrare.add(jTextField.getText());
+                                            for (int j = 0; j < arrayNumeLocatieIntrare.size(); j++) {
+                                               Locatie l = listaLocatii.cautareLocatie(arrayNumeLocatieIntrare.get(j));
+                                                if (l != null)
+                                                    tranzitieCurenta.listaLocatiiIntrare.add(l);
+                                            }
+                                        }else if (comboBox.getSelectedItem().equals("Locatii iesire")) {
+                                                    arrayNumeLocatieIesire.add(jTextField.getText());
+                                            for (int j = 0; j < arrayNumeLocatieIesire.size(); j++) {
+                                                Locatie l = listaLocatii.cautareLocatie(arrayNumeLocatieIesire.get(j));
+                                                if (l != null)
+                                                    tranzitieCurenta.listaLocatiiIesire.add(l);
+                                                }
+                                            }
+
+                                    }
+                                });
+                            }
                     });
 
                 }
 
             });
+
+            panel.add(buttonCancelCreatiListaRetete);
+
+            buttonCancelCreatiListaRetete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame.setVisible(false);
+                    frame.dispose();
+                    setSize(900,900);
+                }
+
+            });
+
+
         }
 
     }
-
-
-
-     /*       int result = 1, i, activareButonLocatii = 1, j = 0;
-            ListaReteteModel retete;
-            ArrayList<ListaReteteModel> listaReteteModelArray = new ArrayList<>();
-            ArrayList<String> arrayNumeLocatieIntrare = new ArrayList<>();
-            ArrayList<String> arrayNumeLocatieIesire = new ArrayList<>();
-            ArrayList<Integer> arrayCoordLocatieIntrareX = new ArrayList<>();
-            ArrayList<Integer> arrayCoordLocatieIntrareY = new ArrayList<>();
-            ArrayList<Integer> arrayCoordLocatieIesireX = new ArrayList<>();
-            ArrayList<Integer> arrayCoordLocatieIesireY = new ArrayList<>();
-
-            String coordXTranzitie = null;
-            String coordYTranzitie = null;
-            String durataTranzitie = null;
-            String coordXLocatie = null;
-            String coordYLocatie = null;
-
-            while (result != JOptionPane.CANCEL_OPTION) {
-                JTextField Field1 = new JTextField();
-                JTextField Field2 = new JTextField();
-                JTextField Field3 = new JTextField();
-                JTextField Field4 = new JTextField();
-                JTextField Field5 = new JTextField();
-                JTextField Field6 = new JTextField();
-                JTextField Field7 = new JTextField();
-                JTextField Field8 = new JTextField();
-                JTextField Field9 = new JTextField();
-                JTextField Field10 = new JTextField();
-                JButton ButonAdaugareLocatii = new JButton("Adauga locatie");
-
-
-
-                JPanel myPanel = new JPanel();
-
-                myPanel.setLayout(new GridLayout(2, 2));
-                myPanel.add(new JLabel("Adaugati numele tranzitiei:"));
-                myPanel.add(Field1);
-                myPanel.add(new JLabel("Adaugati durata:"));
-                myPanel.add(Field2);
-                myPanel.add(new JLabel("Adaugati coordonata x:"));
-                myPanel.add(Field3);
-                myPanel.add(new JLabel("Adaugati coordonata y:"));
-                myPanel.add(Field4);
-                myPanel.add(new JLabel("Adaugati numele locatiei de intrare:"));
-                myPanel.add(Field5);
-                myPanel.add(new JLabel("Adaugati numele locatiei de iesire:"));
-                myPanel.add(Field6);
-                myPanel.add(new JLabel("Adaugati coordonata x a locatiei de intrare:"));
-                myPanel.add(Field7);
-                myPanel.add(new JLabel("Adaugati coordonata y a locatiei de intrare:"));
-                myPanel.add(Field8);
-                myPanel.add(new JLabel("Adaugati coordonata x a locatiei de iesire:"));
-                myPanel.add(Field9);
-                myPanel.add(new JLabel("Adaugati coordonata y a locatiei de iesire:"));
-                myPanel.add(Field10);
-                myPanel.add(ButonAdaugareLocatii);
-
-                result = JOptionPane.showConfirmDialog(null, myPanel,
-                        "Va rog inserati valorile", JOptionPane.OK_CANCEL_OPTION);
-                activareButonLocatii = JOptionPane.showConfirmDialog(null, myPanel,
-                        "Va rog adaugati locatii", JOptionPane.OK_OPTION);
-
-                if (result == JOptionPane.OK_OPTION) {
-                    // save data
-
-                    int durata = Integer.parseInt(Field2.getText());
-                    String numeTranzitie = Field1.getText();
-                    int coordonataX = Integer.parseInt(Field3.getText());
-                    int coordonataY = Integer.parseInt(Field4.getText());
-
-                    String numeLocatieIntrare = Field5.getText();
-                    if(activareButonLocatii == JOptionPane.OK_OPTION);
-                    arrayNumeLocatieIntrare.add(numeLocatieIntrare);
-
-                    String numeLocatieIesire = Field6.getText();
-                    if(activareButonLocatii == JOptionPane.OK_OPTION);
-                    arrayNumeLocatieIesire.add(numeLocatieIesire);
-
-                    int coordonataXLocatieIntrare = Integer.parseInt(Field7.getText());
-                    if(activareButonLocatii == JOptionPane.OK_OPTION);
-                    arrayCoordLocatieIntrareX.add(coordonataXLocatieIntrare);
-
-                    int coordonataYLocatieIntrare = Integer.parseInt(Field8.getText());
-                    if(activareButonLocatii == JOptionPane.OK_OPTION);
-                    arrayCoordLocatieIntrareY.add(coordonataYLocatieIntrare);
-
-                    int coordonataXLocatieIesire = Integer.parseInt(Field9.getText());
-                    if(activareButonLocatii == JOptionPane.OK_OPTION);
-                    arrayCoordLocatieIesireX.add(coordonataXLocatieIesire);
-
-                    int coordonataYLocatieIesire = Integer.parseInt(Field10.getText());
-                    if(activareButonLocatii == JOptionPane.OK_OPTION);
-                    arrayCoordLocatieIesireY.add(coordonataYLocatieIesire);
-
-                    j++;
-
-                    retete = new ListaReteteModel(coordonataX, coordonataY, arrayCoordLocatieIntrareX.get(j), arrayCoordLocatieIntrareY.get(j), arrayCoordLocatieIesireX.get(j), arrayCoordLocatieIesireY.get(j), durata, numeTranzitie, arrayNumeLocatieIntrare.get(j), arrayNumeLocatieIesire.get(j));
-                    listaReteteModelArray.add(retete);
-                }
-            }
-
-            try {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-
-                // root elements
-                Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("Aplicatie");
-                doc.appendChild(rootElement);
-
-                // staff elements
-                for (int l = 0; l < listaReteteModelArray.size(); l++) {
-                    Element locatie = doc.createElement("Locatie");
-                    rootElement.appendChild(locatie);
-
-                    Element numeLocatie = doc.createElement("locationName");
-                    numeLocatie.appendChild(doc.createTextNode(listaReteteModelArray.get(l).getLocatieIntrare()));
-                    locatie.appendChild(numeLocatie);
-
-                    Element coordX = doc.createElement("x");
-                    coordXLocatie = String.valueOf(listaReteteModelArray.get(l).getCoordXLocatieIntrare());
-                    coordX.appendChild(doc.createTextNode(coordXLocatie));
-                    locatie.appendChild(coordX);
-
-                    Element coordY = doc.createElement("y");
-                    coordYLocatie = String.valueOf(listaReteteModelArray.get(l).getCoordYLocatieIntrare());
-                    coordY.appendChild(doc.createTextNode(coordYLocatie));
-                    locatie.appendChild(coordY);
-
-                    Element numarJetoane = doc.createElement("numarJetoane");
-                    numarJetoane.appendChild(doc.createTextNode("0"));
-                    locatie.appendChild(numarJetoane);
-
-                }
-
-                for (int m = 0; m < listaReteteModelArray.size(); m++) {
-                    Element locatie = doc.createElement("Locatie");
-                    rootElement.appendChild(locatie);
-
-                    Element numeLocatie = doc.createElement("locationName");
-                    numeLocatie.appendChild(doc.createTextNode(listaReteteModelArray.get(m).getLocatieIesire()));
-                    locatie.appendChild(numeLocatie);
-
-                    Element coordX = doc.createElement("x");
-                    coordXLocatie = String.valueOf(listaReteteModelArray.get(m).getCoordXLocatieIesire());
-                    coordX.appendChild(doc.createTextNode(coordXLocatie));
-                    locatie.appendChild(coordX);
-
-                    Element coordY = doc.createElement("y");
-                    coordYLocatie = String.valueOf(listaReteteModelArray.get(m).getCoordYLocatieIesire());
-                    coordY.appendChild(doc.createTextNode(coordYLocatie));
-                    locatie.appendChild(coordY);
-
-                    Element numarJetoane = doc.createElement("numarJetoane");
-                    numarJetoane.appendChild(doc.createTextNode("0"));
-                    locatie.appendChild(numarJetoane);
-
-                }
-
-                for (i = 0; i < listaReteteModelArray.size(); i++){
-
-                    Element tranzitie = doc.createElement("Tranzitie");
-                    rootElement.appendChild(tranzitie);
-
-                    Element tranzitionName = doc.createElement("tranzitionName");
-                    tranzitionName.appendChild(doc.createTextNode(listaReteteModelArray.get(i).getTransitionName()));
-                    tranzitie.appendChild(tranzitionName);
-
-                    Element tranzitieCoordX = doc.createElement("x");
-                    coordXTranzitie = String.valueOf(listaReteteModelArray.get(i).getCoordXTranzitie());
-                    tranzitieCoordX.appendChild(doc.createTextNode(coordXTranzitie));
-                    tranzitie.appendChild(tranzitieCoordX);
-
-                    Element tranzitieCoordY = doc.createElement("y");
-                    coordYTranzitie = String.valueOf(listaReteteModelArray.get(i).getCoordYTranzitie());
-                    tranzitieCoordY.appendChild(doc.createTextNode(coordYTranzitie));
-                    tranzitie.appendChild(tranzitieCoordY);
-
-                    Element durata = doc.createElement("durata");
-                    durataTranzitie = String.valueOf(listaReteteModelArray.get(i).getDurata());
-                    durata.appendChild(doc.createTextNode(durataTranzitie));
-                    tranzitie.appendChild(durata);
-
-                    for (int k = 0; k < listaReteteModelArray.size(); k++) {
-                        Element locatieIntrare = doc.createElement("locatieIntrare");
-                        locatieIntrare.appendChild(doc.createTextNode(listaReteteModelArray.get(k).getLocatieIntrare()));
-                        tranzitie.appendChild(locatieIntrare);
-
-                        Element locatieIesire = doc.createElement("locatieIesire");
-                        locatieIesire.appendChild(doc.createTextNode(listaReteteModelArray.get(i).getLocatieIesire()));
-                        tranzitie.appendChild(locatieIesire);
-
-                    }
-
-                }
-
-
-                // write the content into xml file
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                DOMSource source = new DOMSource(doc);
-                StreamResult resultXml = new StreamResult(new File("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Retete2_0.xml"));
-                // Output to console for testing
-                // StreamResult result = new StreamResult(System.out);
-
-                transformer.transform(source, resultXml);
-
-                System.out.println("File saved!");
-
-            }
-            catch (ParserConfigurationException pce) {
-                pce.printStackTrace();
-            }catch (TransformerException tfe) {
-                tfe.printStackTrace();
-            } */
 
     public void drawPane(){
         // a jframe here isn't strictly necessary, but it makes the example a little more real
@@ -827,7 +872,7 @@ public class Aplicatie extends JFrame implements ActionListener {
         }
         doc = null;
         try {
-            doc = dBuilder.parse("C:\\Users\\Ovidiu\\Documents\\Comenzi.xml");
+            doc = dBuilder.parse("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Comenzi.xml");
         } catch (SAXException e1) {
             e1.printStackTrace();
         } catch (IOException e1) {
@@ -865,7 +910,7 @@ public class Aplicatie extends JFrame implements ActionListener {
         }
         doc = null;
         try {
-            doc = dBuilder.parse("C:\\Users\\Ovidiu\\Documents\\Resurse.xml");
+            doc = dBuilder.parse("E:\\Faculta\\Calin Muresan\\PetriNETPrototype\\Resurse.xml");
         } catch (SAXException e1) {
             e1.printStackTrace();
         } catch (IOException e1) {
